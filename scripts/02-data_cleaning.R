@@ -26,7 +26,7 @@ intermediate_data <- raw_data |>
   # carefully handle dates since structure across years are different
   mutate(occupancy_date = case_when(
     
-    substring(occupancy_date,1, 4) %in% c('2023', '2024') ~ substring(occupancy_date, 1, 10),
+    substring(occupancy_date,1, 4) == '2023' ~ substring(occupancy_date, 1, 10),
       .default = paste0('20', substring(occupancy_date, 1, 8))),
     
     occupancy_date = as.Date(occupancy_date))
@@ -55,7 +55,6 @@ missing_values_count(intermediate_data)
 # NOTE: by dropping values, we lost approximately 35% of information.
 
 cleaned_data <- intermediate_data |> drop_na()
-
 
 #### Save data ####
 write_csv(cleaned_data, "../data/analysis_data/analysis_data.csv")
