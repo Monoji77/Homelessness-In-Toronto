@@ -5,7 +5,7 @@ author:
     acknowledgements: https://github.com/Monoji77/Homelessness-In-Canada
 date: today
 date-format: long
-abstract: Increasing numbers of homeless shelter's overnight stay across different regions of the Greater Toronto Area suggests an increasing need to focus on homelessness and the efficacy of existing policies. Regions experiencing greater increases in overnight stays between 2021 and 2023 have to be scrutinised even further in order for canada to reduce incidences of homelessness.
+abstract: Increasing numbers of homeless shelter's overnight stay across different regions of the Greater Toronto Area suggests an increasing need to focus on homelessness and questioning the efficacy of existing policies. Regions experiencing greater increases in overnight stays between 2021 and 2023 have to be scrutinised even further in order for canada to reduce incidences of homelessness. Homelessness does not only affect those that are directly experiencing it. From how our tax dollars are used, healthcare resources, crime and safety, understanding the homelessness landscape would allow every individual to understand the ripple effects of homelessness in their own future.
 format: pdf
 number-sections: true
 bibliography: references.bib
@@ -23,11 +23,12 @@ library(palmerpenguins)
 
 
 # Introduction
-Homelessness has been an ongoing issue in Canada. Since April 1, 2019, the @citeGovernmentOfCanada has began the initiative 'Reaching Home: Canada's Homelessness Strategy', aiming to reduce chronic homelessness by 50% before 2028. About $6.2 billion have been funded to this nationwide issue over the past 9 years. With a slew of policies addressing different categories of homelessness, this paper aims to analyse whether homelessness has improved since the approximate end of COVID in 2021.
+Homelessness has been an ongoing issue in Canada. Since April 1, 2019, the @citeGovernmentOfCanada has began the initiative 'Reaching Home: Canada's Homelessness Strategy', aiming to reduce chronic homelessness by 50% before 2028. About $6.2 billion have been funded to this nationwide issue over the past 9 years. With a slew of policies addressing different categories of homelessness, this paper aims to analyse whether homelessness has improved since the approximate end of COVID in 2021. The findings in this paper suggests that homelessness has not improved. In fact, is still increasing. 
 
 
-The remainder of this paper is structured as follows. @sec-data gives us insights about the dataset and the steps used in obtaining the dataset. In @sec-conclusion, we will be validating the data with existing observations made across various websources and performing our analysis of homelessness. 
+The remainder of this paper is structured as follows. @sec-data gives us insights about the dataset and the steps used in obtaining the dataset[^1]. In @sec-conclusion, we will be validating the data with existing observations made across various web sources and performing our analysis of homelessness. This paper uses @citeR and @rohan.
 
+[^1]: [data and code used for this article can be obtained on:  https://github.com/Monoji77/Homelessness-In-Toronto](https://github.com/Monoji77/Homelessness-In-Toronto)
 \newpage
 
 # Data {#sec-data}
@@ -192,7 +193,4 @@ It is also important to recognize that homelessness is a multi-faceted issue, en
 
 \newpage
 
-
 # References
-
-
