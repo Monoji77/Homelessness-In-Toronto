@@ -1,16 +1,15 @@
 ---
-title: "My title"
-subtitle: "My subtitle if needed"
+title: "Accessing Homelessness Through the Lens of Homeless Shelters Across the Greater Toronto Area"
 author: 
-  - First author
-  - Another author
-thanks: "Code and data are available at: LINK."
+  - name: Chris Yong Hong Sen
+    acknowledgements: https://github.com/Monoji77/Homelessness-In-Canada
 date: today
 date-format: long
-abstract: "First sentence. Second sentence. Third sentence. Fourth sentence."
+abstract: Increasing numbers of homeless shelter's overnight stay across different regions of the Greater Toronto Area suggests an increasing need to focus on homelessness and the efficacy of existing policies. Regions experiencing greater increases in overnight stays between 2021 and 2023 have to be scrutinised even further in order for canada to reduce incidences of homelessness.
 format: pdf
 number-sections: true
 bibliography: references.bib
+bibliographystyle: apa
 ---
 
 ```{r}
@@ -24,194 +23,172 @@ library(palmerpenguins)
 
 
 # Introduction
-Testing 123
-You can and should cross-reference sections and sub-sections. We use @citeR and @rohan.
-
-The remainder of this paper is structured as follows. @sec-data....
+Homelessness has been an ongoing issue in Canada. Since April 1, 2019, the @citeGovernmentOfCanada has began the initiative 'Reaching Home: Canada's Homelessness Strategy', aiming to reduce chronic homelessness by 50% before 2028. About $6.2 billion have been funded to this nationwide issue over the past 9 years. With a slew of policies addressing different categories of homelessness, this paper aims to analyse whether homelessness has improved since the approximate end of COVID in 2021.
 
 
-
-# Data {#sec-data}
-
-Some of our data is of penguins (@fig-bills), from @palmerpenguins.
-
-```{r}
-#| label: fig-bills
-#| fig-cap: Bills of penguins
-#| echo: false
-
-ggplot(penguins, aes(x = island, fill = species)) +
-  geom_bar(alpha = 0.8) +
-  scale_fill_manual(values = c("darkorange","purple","cyan4"),
-                    guide = "none") +
-  theme_minimal() +
-  facet_wrap(~species, ncol = 1) +
-  coord_flip()
-```
-
-Talk more about it.
-
-And also planes (@fig-planes). (You can change the height and width, but don't worry about doing that until you have finished every other aspect of the paper - Quarto will try to make it look nice and the defaults usually work well once you have enough text.)
-
-```{r}
-#| label: fig-planes
-#| fig-cap: Relationship between wing length and width
-#| echo: false
-#| warning: false
-#| message: false
-
-analysis_data <- read_csv(here::here("data/analysis_data/analysis_data.csv"))
-
-analysis_data |> 
-  ggplot(aes(x = width, y = length)) +
-  geom_point(alpha = 0.8) +
-  theme_minimal() +
-  labs(x = "Wing width (mm)",
-       y = "Wing length (mm)")
-```
-
-Talk way more about it. 
-
-
-
-# Model
-
-The goal of our modelling strategy is twofold. Firstly,...
-
-Here we briefly describe the Bayesian analysis model used to investigate... Background details and diagnostics are included in [Appendix -@sec-model-details].
-
-## Model set-up
-
-Define $y_i$ as the number of seconds that the plane remained aloft. Then $\beta_i$ is the wing width and $\gamma_i$ is the wing length, both measured in millimeters.  
-
-\begin{align} 
-y_i|\mu_i, \sigma &\sim \mbox{Normal}(\mu_i, \sigma) \\
-\mu_i &= \alpha + \beta_i + \gamma_i\\
-\alpha &\sim \mbox{Normal}(0, 2.5) \\
-\beta &\sim \mbox{Normal}(0, 2.5) \\
-\gamma &\sim \mbox{Normal}(0, 2.5) \\
-\sigma &\sim \mbox{Exponential}(1)
-\end{align}
-
-We run the model in R [@citeR] using the `rstanarm` package of @rstanarm. We use the default priors from `rstanarm`.
-
-
-### Model justification
-
-We expect a positive relationship between the size of the wings and time spent aloft. In particular...
-
-We can use maths by including latex between dollar signs, for instance $\theta$.
-
-
-# Results
-
-Our results are summarized in @tbl-modelresults.
-
-```{r}
-#| echo: false
-#| eval: true
-#| warning: false
-#| message: false
-
-library(rstanarm)
-
-first_model <-
-  readRDS(file = here::here("models/first_model.rds"))
-```
-
-```{r}
-#| echo: false
-#| eval: true
-#| label: tbl-modelresults
-#| tbl-cap: "Explanatory models of flight time based on wing width and wing length"
-#| warning: false
-
-modelsummary::modelsummary(
-  list(
-    "First model" = first_model
-  ),
-  statistic = "mad",
-  fmt = 2
-)
-```
-
-
-
-
-# Discussion
-
-## First discussion point {#sec-first-point}
-
-If my paper were 10 pages, then should be be at least 2.5 pages. The discussion is a chance to show off what you know and what you learnt from all this. 
-
-## Second discussion point
-
-## Third discussion point
-
-## Weaknesses and next steps
-
-Weaknesses and next steps should also be included.
+The remainder of this paper is structured as follows. @sec-data gives us insights about the dataset and the steps used in obtaining the dataset. In @sec-conclusion, we will be validating the data with existing observations made across various websources and performing our analysis of homelessness. 
 
 \newpage
 
-\appendix
+# Data {#sec-data}
 
-# Appendix {-}
+## <span style="font-size: 0.8em;">Data Attributes</span>
+
+The data provides us daily counts of homeless people served, categorised by their demographics such as gender or age, as well as the type of housing service available for homeless people. It also provides us information about the number of beds and that are available and approved for homeless individuals and families.
+
+The original dataset contains over 43 different attributes...
+
+_id:
+: unique identifier.
+
+OCCUPANCY_DATE:
+: date of record collected at 4AM EDT the following day. eg. Jan 01, 2021 would be the data collected on Jan 02, 2021 4AM EDT. 
+
+ORGANIZATION_ID:
+: unique ID identifying organisations that is robust to organisation name changes.
+
+ORGANIZATION_NAME:
+: name of organisation offering overnight service.
+
+SHELTER_ID:
+: unique ID indentifying shelter groups that is robust to shelter name changes.
+
+SHELTER_GROUP:
+: group for which the overnight program belongs to in Shelter Management Information System (SMIS) database.
+
+LOCATION_ID:
+: unique ID identifying locations that is robust to location name changes.
+
+LOCATION_NAME:
+: name of location where overnight service is occuring.
+
+LOCATION_ADDRESS:
+: street address of the location of overnight service.
+
+LOCATION_POSTAL_CODE:
+: postal code of location of overnight service.
+
+LOCATION_CITY:
+: city where overnight service is occuring.
+
+LOCATION_PROVINCE:
+: province where overnight service is occuring.
+
+PROGRAM_ID: 
+: unique ID identifying overnight service programs that is robust to program name changes.
+
+PROGRAM_NAME:
+: name of program.
+
+SECTOR:
+: type of homeless shelter. Possible classifications includes, 'adult men', 'adult women', 'mixed adult' (co-ed or all gender), 'youth' and 'family'.
+
+PROGRAM_MODEL:
+: classification of overnight service programs as either 'Emergency' or 'Transitional'. Emergency refers to a program where any homeless people has access to the program regardless of a valid referral. Transitional refers to a specialised program catered to homeless individuals/families with a valid referral.
+
+OVERNIGHT_SERVICE_TYPE:
+: classification of the type of overnight service provided. 
+
+* Shelter - temporary accommodation and support services to facilitate the shift from homelessness to staying in a proper home
+* 24-Hour Respite - an allied shelter service that emphasises greater and efficient accessibility to a safe shelter with necessities such as resting spaces, food, and service referrals.
+* Motel/Hotel - a program that provides beds/rooms through contracts with hotels, typically in response to emergencies.
+* Interim Housing - housing provided via contracts with apartment spaces.
+* Warming Centre - an allied shelter service that provides immediate housing for extreme cold weathers. 
+* 24-Hour Women's Drop-in - housing that is targeted to homeless women, transgender or gender-non-binary people.
+* Isolation/Recovery Site - dedicated COVID-19 site targetted at homeless people who contracted COVID-19.
+
+PROGRAM_AREA:
+: classification on whether program is all year round or simply temporary due to an unexpected emergency.
+
+SERVICE_USER_COUNT:
+: a counter for homeless people/families using a particular overnight service in a given day.
+
+CAPACITY_TYPE:
+: room-based or bed-based overnight service.
+
+CAPACITY_ACTUAL_BED:
+: actual number of beds available during the overnight service.
+
+CAPACITY_FUNDING_BED:
+: approved number of beds available for an overnight service.
+
+OCCUPIED_BEDS:
+: actual number of beds occupied by homeless people/families during an overnight service.
+
+UNOCCUPIED_BEDS:
+: unoccupied beds calculated as CAPACITY_ACTUAL_BED minus OCCUPIED_BED.
+
+UNAVAILABLE_BEDS:
+: beds that are unavailable for the program due to maintenance, outbreaks or pest control, calculated as CAPACITY_FUNDING_BED minus CAPACITY_ACTUAL_BED.
+
+CAPACITY_ACTUAL_ROOM:
+: actual number of rooms available during the overnight service.
+
+CAPACITY_FUNDING_ROOM:
+: approved number of rooms available for an overnight service.
+
+OCCUPIED_ROOMS:
+: actual number of rooms occupied by homeless people/families during an overnight service.
+
+UNOCCUPIED_ROOMS:
+: unoccupied rooms calculated as CAPACITY_ACTUAL_ROOM minus OCCUPIED_ROOM.
+
+UNAVAILABLE_ROOMS:
+: rooms that are unavailable for the program due to maintenance, outbreaks or pest control, calculated as CAPACITY_FUNDING_ROOM minus CAPACITY_ACTUAL_ROOM.
+
+OCCUPANCY_RATE_BEDS: 
+: proportion of actual bed capacity occupied during a given overnight service, calculated as OCCUPIED_BED divided by CAPACITY_ACTUAL_BED.
+
+OCCUPANCY_RATE_ROOMS:
+: proportion of actual room capacity occupied during a given overnight service, calculated as OCCUPIED_ROOM divided by CAPACITY_ACTUAL_ROOM.
 
 
-# Additional data details
 
-# Model details {#sec-model-details}
+## Data Collection
+Daily active overnight allied services and shelters data was collected in the Shelter Management Information System (SMIS) database under the division, Toronto Shelter and Support Services (TSSS). Prior to 2021, TSSS has also collected data regarding homeless shelter counts. Since then, the TSSS has revised the curation of the dataset. Major revisions include...
 
-## Posterior predictive check
+* [Overnight Service Type]{.underline}: Accounts for all overnight services instead of only those from shelter programs.
 
-In @fig-ppcheckandposteriorvsprior-1 we implement a posterior predictive check. This shows...
+* [Capacity Type]{.underline}: The new dataset distinguishes room based capacity and bed based capacity. This allows us to differentiate between homeless individuals and homeless families as room based capacity are geared towards households where the sleeping rooms are not shared by different families, while bed based capacity are characterised by a common and shared sleeping area. This prevents over reporting of the previous capacity of room based capacity.
 
-In @fig-ppcheckandposteriorvsprior-2 we compare the posterior with the prior. This shows... 
+* [Two Measures of Capacity]{.underline}: The TSSS has since provided **Funding** capacity and **Actual** capacity. Funding capacity reports the *intended* number of rooms/beds available for a particular day. Actual capacity reports the *actual* number of rooms/beds provided for that day. Datasets prior to 2021 only included **Funding** capacity. Therefore, the **Actual** capacity would provide a more accurate representation of various program's overnight stay rates.
 
-```{r}
-#| eval: true
-#| echo: false
-#| message: false
+
+# Conclusion {#sec-conclusion}
+
+
+```{r service counts across cities in toronto}
 #| warning: false
-#| label: fig-ppcheckandposteriorvsprior
-#| layout-ncol: 2
-#| fig-cap: "Examining how the model fits, and is affected by, the data"
-#| fig-subcap: ["Posterior prediction check", "Comparing the posterior with the prior"]
+#| echo: false
+#| label: fig-homelessness_across_cities
+#| fig-cap: 'number of homeless people served from 2021 to 2023 across cities'
 
-pp_check(first_model) +
-  theme_classic() +
-  theme(legend.position = "bottom")
+data <- read_csv('../data/analysis_data/analysis_data.csv')
 
-posterior_vs_prior(first_model) +
+data %>%
+  filter(program_area == 'Base Shelter and Overnight Services System') %>%
+  group_by(occupancy_date, location_city) %>%
+  summarise(user_count_by_location = mean(service_user_count)) %>%
+  ggplot() +
+  geom_line(aes(x=occupancy_date, y=user_count_by_location, col=location_city)) +
+  facet_wrap(~ location_city) +
+  scale_y_continuous(limits=c(0, 150)) +
+  xlab('Date') +
+  ylab('Average number of homeless people served') +
+  labs(col = 'city') +
   theme_minimal() +
-  scale_color_brewer(palette = "Set1") +
-  theme(legend.position = "bottom") +
-  coord_flip()
+  theme(axis.text.x = element_text(angle = 30)) 
+  
+
 ```
+## Data Summary
 
-## Diagnostics
+The situation provided by this dataset immediately alerts us to the city of North York the number of homeless individuals/families serviced daily has increased from beginning of 2021 to the end of 2023. @citeTorontoWebsite posits that homeless shelters have filled up only after 4 days of it's launch back in 2022. This simple observation can be seen from @fig-homelessness_across_cities under North York's scatter plot where there there were sporadic volatile increases in the first quarter of 2022. Unfortunately, not much research or journalism has been done to explore but the data presented by @citeOpenDataToronto suggests that more can be done to help indiviuals and family struck by the unfortunate case of homelessness. 
 
-@fig-stanareyouokay-1 is a trace plot. It shows... This suggests...
+While the federal government has funneled a billions of dollars to the 'Reaching Home' initiative, the increasing number of homeless shelter's overnight stay suggests that the policies have not been as effective as the federal government had initially planned. 
 
-@fig-stanareyouokay-2 is a Rhat plot. It shows... This suggests...
-
-```{r}
-#| echo: false
-#| eval: true
-#| message: false
-#| warning: false
-#| label: fig-stanareyouokay
-#| fig-cap: "Checking the convergence of the MCMC algorithm"
-#| fig-subcap: ["Trace plot", "Rhat plot"]
-#| layout-ncol: 2
-
-plot(first_model, "trace")
-
-plot(first_model, "rhat")
-```
-
-
+# Limitations
+It is also important to recognize that homelessness is a multi-faceted issue, entangled in the web of problems facing Canada such as increasing immigration and refugees, high inflation and higher cost of living. These interconnected issues are exacerbated by insufficient data collection geared towards the study of how these issues could be connected to each other. The analysis provided in this paper only analyses a single entity (dataset). In an article written by @citeTVOToday, he explains how many of us do not have the full grasp of homelessness, fueled by our existing (and potentially obsolete) definitions of 'homelessness', characterised by easily quantifiable and visible encampments and tents that litter the parks of the city. He explores an additional definition, which includes individuals who stay with their friend's or have some cash in hand to afford motels in the short term. These individuals who deplete their financial resources before setting a firm foundation for long-term, sustainaible ways of living may be the key contributing factors in understanding the cause of homelessness, therefore allowing the federal government to project funding to snip the root of the problem. 
 
 \newpage
 
