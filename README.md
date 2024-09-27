@@ -15,4 +15,4 @@ The repo is structured as:
 
 
 ## Statement on LLM usage
-LLM was not used for this paper. 
+LLM was used only for guide on forking [another repository](https://github.com/RohanAlexander/starter_folder/forks) and creating a local copy of the forked repository on my local drive. Prompts and replies by ChatGPT is available in other/llm_usage/usage.txt. 
