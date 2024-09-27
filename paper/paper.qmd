@@ -9,7 +9,6 @@ abstract: Increasing numbers of homeless shelter's overnight stay across differe
 format: pdf
 number-sections: true
 bibliography: references.bib
-bibliographystyle: apa
 ---
 
 ```{r}
@@ -19,134 +18,27 @@ bibliographystyle: apa
 
 library(tidyverse)
 library(palmerpenguins)
+data <- read_csv('../data/analysis_data/analysis_data.csv')
 ```
 
 
 # Introduction
-Homelessness has been an ongoing issue in Canada. Since April 1, 2019, the @citeGovernmentOfCanada has began the initiative 'Reaching Home: Canada's Homelessness Strategy', aiming to reduce chronic homelessness by 50% before 2028. About $6.2 billion have been funded to this nationwide issue over the past 9 years. With a slew of policies addressing different categories of homelessness, this paper aims to analyse whether homelessness has improved since the approximate end of COVID in 2021. The findings in this paper suggests that homelessness has not improved. In fact, is still increasing. 
+Homelessness has been an ongoing issue in Canada. Since April 1, 2019, the @citeGovernmentOfCanada has began the initiative 'Reaching Home: Canada's Homelessness Strategy', aiming to reduce chronic homelessness by 50% before 2028. About $6.2 billion have been funded to this nationwide issue over the past 9 years. With a slew of policies addressing different categories of homelessness, this paper aims to analyse whether homelessness has improved since the approximate end of COVID in 2021. 
 
+Unfortunately, homelessness affects us all. Local communities with large homeless encampments may have concerns over safety and spreading of diseases due to the close nature of said encampments. Furthermore, taxpayer money is funnelled into project 'Reaching Home', therefore it is important to know that the money we earned is well spent on a project that is feasible to solve. However, the findings in this paper suggests that homelessness has not improved. In fact, is still increasing. 
 
-The remainder of this paper is structured as follows. @sec-data gives us insights about the dataset and the steps used in obtaining the dataset[^1]. In @sec-conclusion, we will be validating the data with existing observations made across various web sources and performing our analysis of homelessness. This paper uses @citeR and @rohan.
+The remainder of this paper is structured as follows. @sec-data gives us insights about the dataset and the steps used in obtaining the dataset[^1]. In @sec-conclusion, we will be validating the data with existing observations made across various web sources and performing our analysis of homelessness. Data cleaning and manipulation is performed on R programming language. [@citeR; @rohan]
 
 [^1]: [data and code used for this article can be obtained on:  https://github.com/Monoji77/Homelessness-In-Toronto](https://github.com/Monoji77/Homelessness-In-Toronto)
 \newpage
 
 # Data {#sec-data}
 
-## <span style="font-size: 0.8em;">Data Attributes</span>
+## Measurement of Homelessness
+This dataset offers us an insight to the daily count of overnight stays in different homeless shelters. Since we are interested in uncovering the landscape of homelessness, we would be interested in observing the daily overnight stays categorised by different groups such as regions where shelters are, the gender and age demographic of the particular shelter. By using daily overnight stays summarised by the various groups, we would be able to observe discrimination (if it exists) against any particular groups.
 
-The data provides us daily counts of homeless people served, categorised by their demographics such as gender or age, as well as the type of housing service available for homeless people. It also provides us information about the number of beds and that are available and approved for homeless individuals and families.
-
-The original dataset contains over 43 different attributes...
-
-_id:
-: unique identifier.
-
-OCCUPANCY_DATE:
-: date of record collected at 4AM EDT the following day. eg. Jan 01, 2021 would be the data collected on Jan 02, 2021 4AM EDT. 
-
-ORGANIZATION_ID:
-: unique ID identifying organisations that is robust to organisation name changes.
-
-ORGANIZATION_NAME:
-: name of organisation offering overnight service.
-
-SHELTER_ID:
-: unique ID indentifying shelter groups that is robust to shelter name changes.
-
-SHELTER_GROUP:
-: group for which the overnight program belongs to in Shelter Management Information System (SMIS) database.
-
-LOCATION_ID:
-: unique ID identifying locations that is robust to location name changes.
-
-LOCATION_NAME:
-: name of location where overnight service is occuring.
-
-LOCATION_ADDRESS:
-: street address of the location of overnight service.
-
-LOCATION_POSTAL_CODE:
-: postal code of location of overnight service.
-
-LOCATION_CITY:
-: city where overnight service is occuring.
-
-LOCATION_PROVINCE:
-: province where overnight service is occuring.
-
-PROGRAM_ID: 
-: unique ID identifying overnight service programs that is robust to program name changes.
-
-PROGRAM_NAME:
-: name of program.
-
-SECTOR:
-: type of homeless shelter. Possible classifications includes, 'adult men', 'adult women', 'mixed adult' (co-ed or all gender), 'youth' and 'family'.
-
-PROGRAM_MODEL:
-: classification of overnight service programs as either 'Emergency' or 'Transitional'. Emergency refers to a program where any homeless people has access to the program regardless of a valid referral. Transitional refers to a specialised program catered to homeless individuals/families with a valid referral.
-
-OVERNIGHT_SERVICE_TYPE:
-: classification of the type of overnight service provided. 
-
-* Shelter - temporary accommodation and support services to facilitate the shift from homelessness to staying in a proper home
-* 24-Hour Respite - an allied shelter service that emphasises greater and efficient accessibility to a safe shelter with necessities such as resting spaces, food, and service referrals.
-* Motel/Hotel - a program that provides beds/rooms through contracts with hotels, typically in response to emergencies.
-* Interim Housing - housing provided via contracts with apartment spaces.
-* Warming Centre - an allied shelter service that provides immediate housing for extreme cold weathers. 
-* 24-Hour Women's Drop-in - housing that is targeted to homeless women, transgender or gender-non-binary people.
-* Isolation/Recovery Site - dedicated COVID-19 site targetted at homeless people who contracted COVID-19.
-
-PROGRAM_AREA:
-: classification on whether program is all year round or simply temporary due to an unexpected emergency.
-
-SERVICE_USER_COUNT:
-: a counter for homeless people/families using a particular overnight service in a given day.
-
-CAPACITY_TYPE:
-: room-based or bed-based overnight service.
-
-CAPACITY_ACTUAL_BED:
-: actual number of beds available during the overnight service.
-
-CAPACITY_FUNDING_BED:
-: approved number of beds available for an overnight service.
-
-OCCUPIED_BEDS:
-: actual number of beds occupied by homeless people/families during an overnight service.
-
-UNOCCUPIED_BEDS:
-: unoccupied beds calculated as CAPACITY_ACTUAL_BED minus OCCUPIED_BED.
-
-UNAVAILABLE_BEDS:
-: beds that are unavailable for the program due to maintenance, outbreaks or pest control, calculated as CAPACITY_FUNDING_BED minus CAPACITY_ACTUAL_BED.
-
-CAPACITY_ACTUAL_ROOM:
-: actual number of rooms available during the overnight service.
-
-CAPACITY_FUNDING_ROOM:
-: approved number of rooms available for an overnight service.
-
-OCCUPIED_ROOMS:
-: actual number of rooms occupied by homeless people/families during an overnight service.
-
-UNOCCUPIED_ROOMS:
-: unoccupied rooms calculated as CAPACITY_ACTUAL_ROOM minus OCCUPIED_ROOM.
-
-UNAVAILABLE_ROOMS:
-: rooms that are unavailable for the program due to maintenance, outbreaks or pest control, calculated as CAPACITY_FUNDING_ROOM minus CAPACITY_ACTUAL_ROOM.
-
-OCCUPANCY_RATE_BEDS: 
-: proportion of actual bed capacity occupied during a given overnight service, calculated as OCCUPIED_BED divided by CAPACITY_ACTUAL_BED.
-
-OCCUPANCY_RATE_ROOMS:
-: proportion of actual room capacity occupied during a given overnight service, calculated as OCCUPIED_ROOM divided by CAPACITY_ACTUAL_ROOM.
-
-
-
-## Data Collection
-Daily active overnight allied services and shelters data was collected in the Shelter Management Information System (SMIS) database under the division, Toronto Shelter and Support Services (TSSS). Prior to 2021, TSSS has also collected data regarding homeless shelter counts. Since then, the TSSS has revised the curation of the dataset. Major revisions include...
+## Original Data
+Daily active overnight allied services and shelters data was collected in the Shelter Management Information System (SMIS) database from Toronto Shelter and Support Services (TSSS). Prior to 2021, TSSS has also collected data regarding homeless shelter counts. Since then, the TSSS has revised the curation of the dataset. Major revisions include...    
 
 * [Overnight Service Type]{.underline}: Accounts for all overnight services instead of only those from shelter programs.
 
@@ -154,39 +46,171 @@ Daily active overnight allied services and shelters data was collected in the Sh
 
 * [Two Measures of Capacity]{.underline}: The TSSS has since provided **Funding** capacity and **Actual** capacity. Funding capacity reports the *intended* number of rooms/beds available for a particular day. Actual capacity reports the *actual* number of rooms/beds provided for that day. Datasets prior to 2021 only included **Funding** capacity. Therefore, the **Actual** capacity would provide a more accurate representation of various program's overnight stay rates.
 
+The previous dataset collected by the TSSS prior to 2021 cannot be used in this discussion because there were overnight programs that were not captured by in the database. Furthermore, the older datasets did not distinguish room-based stays and bed-based. With the newer dataset, we can further examine if there exists a difference between homeless households and homeless individuals. Overall, as the newer dataset provides data that resembles closer to the actual landscape of overnight homeless stays, only the newer datasets collected yearly from 2021 to present should be used. While data from 2024 is available, it is incomplete, therefore omitted from the analysis from this paper. This paper will solely analysize data from 2021 to 2023. 
 
-# Conclusion {#sec-conclusion}
+## Data Cleaning
+This paper uses tidyverse library from R to perform data manipulation and cleaning. [@citeR] While the original dataset captured many aspects of overnight stays in homeless shelters, we will be focusing on the general trends across various groups mentioned earlier. Therefore, we will be reducing 43 possible attributes to only   
+
+## <span style="font-size: 0.8em;">Data Attributes</span>
+The original dataset contains over 42 different attributes. However, for the analysis of these paper, we will be utilising the following 6 attributes and *service_user_count* as the response.
+
+occupancy_date:
+: date of record collected at 4AM EDT the following day. eg. Jan 01, 2021 would be the data collected on Jan 02, 2021 4AM EDT. 
+
+location_city:
+: city where overnight service is occuring.
+
+sector:
+: type of homeless shelter. Possible classifications includes, 'adult men', 'adult women', 'mixed adult' (co-ed or all gender), 'youth' and 'family'.
+
+program_area:
+: classification on whether program is all year round or simply temporary due to an unexpected emergency.
+
+service_user_count:
+: a counter for homeless people/families using a particular overnight service in a given day.
+
+capacity_actual_bed:
+: actual number of beds available during the overnight service.
+
+capacity_actual_room:
+: actual number of rooms available during the overnight service.
 
 
-```{r service counts across cities in toronto}
+# Findings
+
+## Average overnight stays at homeless shelters across Greater Toronto Area has increased from 2021 to 2023.
+
+@fig-homelessness_across_cities shows that that from 2021 to 2023, all cities have increased levels of average daily overnight stays in their regions. Particularly for North York, We are able to observe a larger increase from 69 homeless overnight stays in 2021 to 139 homeless overnight stays in 2023. @tbl-city-increase-table summarises the percentage increase in average daily overnight stays across the different regions from 2021 to 2023.
+
+| City        | Percentage |
+|:------:     |:------:|
+| Etobicoke   | +20%    |
+| North York  | +100%   |
+| Scarborough | +40%    |
+| Vaughan     |  +4%    |
+
+
+: Percentage increase of average daily homeless stays from 2021 to 2023 {#tbl-city-increase-table}
+```{r average service counts across cities in toronto from 2021 to 2023}
 #| warning: false
 #| echo: false
 #| label: fig-homelessness_across_cities
 #| fig-cap: 'number of homeless people served from 2021 to 2023 across cities'
 
-data <- read_csv('../data/analysis_data/analysis_data.csv')
-
-data %>%
-  filter(program_area == 'Base Shelter and Overnight Services System') %>%
-  group_by(occupancy_date, location_city) %>%
-  summarise(user_count_by_location = mean(service_user_count)) %>%
+data |>
+  group_by(occupancy_date, location_city) |>
+  summarise(user_count_by_location = mean(service_user_count)) |>
   ggplot() +
-  geom_line(aes(x=occupancy_date, y=user_count_by_location, col=location_city)) +
-  facet_wrap(~ location_city) +
-  scale_y_continuous(limits=c(0, 150)) +
+  geom_line(aes(x = occupancy_date, y = user_count_by_location, col = location_city)) +
+  facet_wrap( ~ location_city, ncol = 2) +
+  scale_y_continuous(limits = c(0, 150)) +
   xlab('Date') +
   ylab('Average number of homeless people served') +
   labs(col = 'city') +
   theme_minimal() +
-  theme(axis.text.x = element_text(angle = 30)) 
-  
+  theme(axis.text.x = element_text(angle = 30))
 
+
+#data |>
+#  filter(location_city == 'Etobicoke' &
+#           occupancy_date == max(occupancy_date) ) |>
+#  summarise(mean(service_user_count))
+
+#get_min <- function(city) {
+#  data |>
+#  filter(location_city == city &
+#           occupancy_date == min(occupancy_date) ) |>
+#  summarise(mean(service_user_count)) |>
+#    pull()
+
+#}
+#get_max <- function(city) {
+#  data |>
+#  filter(location_city == city &
+#           occupancy_date == max(occupancy_date) ) |>
+#  summarise(mean(service_user_count)) |>
+#    pull()
+#}
+
+#get_all <- function(city) {
+#  print(paste(get_min(city), get_max(city), #round(abs(get_min(city)-get_max(city))/get_min(city), 3) * 100))
+#}
+
+#get_all('Vaughan')
 ```
-## Data Summary
 
-The situation provided by this dataset immediately alerts us to the city of North York the number of homeless individuals/families serviced daily has increased from beginning of 2021 to the end of 2023. @citeTorontoWebsite posits that homeless shelters have filled up only after 4 days of it's launch back in 2022. This simple observation can be seen from @fig-homelessness_across_cities under North York's scatter plot where there there were sporadic volatile increases in the first quarter of 2022. Unfortunately, not much research or journalism has been done to explore but the data presented by @citeOpenDataToronto suggests that more can be done to help indiviuals and family struck by the unfortunate case of homelessness. 
+## Homeless families are the greatest contributers of the increase in overnight stays in North York from 2021 to 2023.
 
-While the federal government has funneled a billions of dollars to the 'Reaching Home' initiative, the increasing number of homeless shelter's overnight stay suggests that the policies have not been as effective as the federal government had initially planned. 
+To figure out what may have caused a significant doubling of average daily overnight stays in North York, we can immediately reconcile what happened at various time periods from @fig-homelessness_across_cities using @fig-homelessness_ny_demographic. According to the data presented in @fig-homelessness_ny_demographic, there was a big jump in the number of homeless families that are seeking overnight shelter services around the last quarter of 2021, with contributing increases from mixed adult and women homeless shelters as well.  
+
+```{r average daily service counts across sectors from 2021 to 2023 in North York }
+#| warning: false
+#| echo: false
+#| label: fig-homelessness_ny_demographic
+#| fig-cap: 'number of homeless people served from 2021 to 2023 across cities'
+
+data |>
+  filter(location_city == 'North York') |>
+  group_by(occupancy_date, sector) |>
+  summarise(user_count_by_location = mean(service_user_count)) |>
+  ggplot() +
+  geom_line(aes(x = occupancy_date, y = user_count_by_location, col = sector)) +
+  xlab('Date') +
+  ylab('Average number of homeless people served') +
+  scale_y_continuous(limits = c(0, 400)) +
+  labs(col = 'demographic') +
+  theme_minimal() +
+  theme(axis.text.x = element_text(angle = 30))
+
+#data |>
+#  filter(occupancy_date %in% c('2022-10-01', '2022-12-31') &
+#           sector == 'Families') |>
+#  group_by(occupancy_date) |>
+#  summarise(mean(service_user_count))
+```
+```{r}
+#| warning: false
+#| include: false
+data |>
+  filter(location_city == 'North York') |>
+  group_by(occupancy_date, sector) |>
+  summarise(avg_daily = mean(service_user_count)) |>
+  filter(sector == 'Families') |>
+  ungroup() |>
+  mutate(
+    next_count = lead(avg_daily),
+    perc_increase = (next_count - avg_daily) / avg_daily * 100
+  ) %>%
+  select(occupancy_date, sector, avg_daily, next_count, perc_increase) |>
+  filter(perc_increase > 10)
+```
+## Temporary Refugee response programs have an increasing number of homeless people occupying their shelters from 2021 to 2023. 
+
+According to @fig-homelessness_program, the most interesting part of the plot is that refugees are the ones contributing most to homelessness across all regions, from 130 average daily overnight stays in 2021 to 250 average daily overnight stays in 2023, approximately a 92% increase. 
+
+```{r}
+#| warning: false
+#| echo: false
+#| label: fig-homelessness_program
+#| fig-cap: 'number of homeless people served from 2021 to 2023 across programs'
+
+
+data |>
+  group_by(occupancy_date, program_area) |>
+  summarise(user_count_by_location = mean(service_user_count)) |>
+  ggplot() +
+  geom_line(aes(x = occupancy_date, y = user_count_by_location, col = program_area)) +
+  xlab('Date') +
+  ylab('Average number of homeless people served') +
+  labs(col = 'program type') +
+  theme_minimal() +
+  theme(axis.text.x = element_text(angle = 30)) 
+```
+
+# Conclusion {#sec-conclusion}
+The situation provided by this dataset immediately alerts us to the city of North York the number of homeless families serviced daily has increased from beginning of 2021 to the end of 2023. @citeTorontoWebsite posits that homeless shelters have filled up only after 4 days of it's launch back in 2022. This simple observation can be seen from @fig-homelessness_across_cities under North York's scatter plot where there there were sporadic volatile increases in the first quarter of 2022. Unfortunately, not much research or journalism has been done to explore but the data presented by @citeOpenDataToronto suggests that more can be done to help indiviuals and family struck by the unfortunate case of homelessness. 
+
+While the federal government has funneled a billions of dollars to the 'Reaching Home' initiative, the increasing number of homeless shelter's overnight stay suggests that the policies have not been as effective as the federal government had initially planned. Furthermore, findings in @fig-homelessness_program could suggest a greater focus on targetting refugee-related policies in order to curb the degree of homeless in the Greater Toronto Area.
 
 # Limitations
 It is also important to recognize that homelessness is a multi-faceted issue, entangled in the web of problems facing Canada such as increasing immigration and refugees, high inflation and higher cost of living. These interconnected issues are exacerbated by insufficient data collection geared towards the study of how these issues could be connected to each other. The analysis provided in this paper only analyses a single entity (dataset). In an article written by @citeTVOToday, he explains how many of us do not have the full grasp of homelessness, fueled by our existing (and potentially obsolete) definitions of 'homelessness', characterised by easily quantifiable and visible encampments and tents that litter the parks of the city. He explores an additional definition, which includes individuals who stay with their friend's or have some cash in hand to afford motels in the short term. These individuals who deplete their financial resources before setting a firm foundation for long-term, sustainaible ways of living may be the key contributing factors in understanding the cause of homelessness, therefore allowing the federal government to project funding to snip the root of the problem. 
